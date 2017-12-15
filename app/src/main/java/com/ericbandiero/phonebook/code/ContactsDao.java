@@ -65,4 +65,11 @@ public class ContactsDao {
 		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Cursor count:"+cursor.getCount());
 		return contactsModelList;
 	}
+
+
+	public void insertContact(){
+		
+	}
+
+
 }

@@ -1,23 +1,31 @@
 package com.ericbandiero.phonebook.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
+import com.ericbandiero.phonebook.code.AppConstant;
 
 public class MainActivity extends AppCompatActivity {
 
+	public static final String CONTACT_NAME = "CONTACT_NAME";
+	private Context contextActivity;
+	final private int request_code_add_contact=1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		contextActivity=this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
@@ -25,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
+				Intent  intent=new Intent(contextActivity,AddContactActivity.class);
+				startActivityForResult(intent,request_code_add_contact);
 			}
 		});
 	}
@@ -52,5 +60,19 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent contactInfo) {
+		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Result code:"+resultCode);
+		// Check which request we're responding to
+		if (requestCode == request_code_add_contact) {
+			// Make sure the request was successful
+			if (resultCode == RESULT_OK) {
+				// The user picked a contact.
+				// The Intent's data Uri identifies which contact was selected.
+				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Data:"+contactInfo.getStringExtra(CONTACT_NAME));
+				// Do something with the contact here (bigger example below)
+			}
+		}
 	}
 }
