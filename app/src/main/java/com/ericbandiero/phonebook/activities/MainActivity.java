@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ericbandiero.phonebook.R;
-import com.ericbandiero.phonebook.Utils.PhoneUtility;
+import com.ericbandiero.phonebook.Utils.UtilityPhone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
-			PhoneUtility.toastShowLong(this,getString(R.string.setting_not_yet_implemented));
+			UtilityPhone.toastShowLong(this,getString(R.string.setting_not_yet_implemented));
 			return true;
 		}
 
