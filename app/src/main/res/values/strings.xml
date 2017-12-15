@@ -6,4 +6,5 @@
     <string name="add_contact_name">Name:</string>
     <string name="contact_row_name_prefix">Name:</string>
     <string name="contact_row_phone_prefix">Phone:</string>
+    <string name="contacts_list">Contacts List</string>
 </resources>

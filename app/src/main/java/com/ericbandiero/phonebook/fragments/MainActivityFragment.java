@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
@@ -28,7 +29,7 @@ public class MainActivityFragment extends Fragment {
 
 	//TODO Make this a dagger injection
 	ContactsDao contactsDao=new ContactsDao();
-
+	private TextView textViewHeader;
 
 	public MainActivityFragment() {
 
@@ -38,7 +39,6 @@ public class MainActivityFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_main, container, false);
-
 	}
 
 	/**
@@ -54,6 +54,7 @@ public class MainActivityFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
 		//Check for permissions before calling this
 		RecyclerView rvDataHolderTwoFields =  getView().findViewById(R.id.rvContacts);
 
