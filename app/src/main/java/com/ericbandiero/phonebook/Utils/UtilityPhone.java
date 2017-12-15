@@ -21,7 +21,15 @@ import com.ericbandiero.phonebook.interfaces.ICommand;
 
 public class UtilityPhone {
 	public static void toastShowLong(Context context,String string){
-		Toast toast=Toast.makeText(context,string,Toast.LENGTH_LONG);
+		toastIt(context,string,Toast.LENGTH_LONG);
+	}
+
+	public static void toastShowShort(Context context,String string){
+		toastIt(context,string,Toast.LENGTH_SHORT);
+	}
+
+	private static void toastIt(Context context,String string,int toastDuration){
+		Toast toast=Toast.makeText(context,string,toastDuration);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
 	}
