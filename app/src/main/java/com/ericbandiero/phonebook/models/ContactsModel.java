@@ -9,6 +9,12 @@ public class ContactsModel {
 	private String ContactName;
 	private String ContactNumber;
 
+
+	public ContactsModel(String contactName, String contactNumber) {
+		ContactName = contactName;
+		ContactNumber = contactNumber;
+	}
+
 	public String getContactName() {
 		return ContactName;
 	}

@@ -58,17 +58,51 @@ public class ContactsDao {
 	 * @return A list of type {@link ContactsModel}
 	 */
 	private List<ContactsModel> allContacts(Context context){
+		String name="";
+		String phone="";
+		String contactId;
+
 		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Getting contacts...");
 		List<ContactsModel> contactsModelList=new ArrayList<>();
 		ContentResolver contentResolver = context.getContentResolver();
-		Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+		Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Cursor count:"+cursor.getCount());
+		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Cursor fields:"+cursor.getColumnCount());
+		String[] columnNames = cursor.getColumnNames();
+		for (int i = 0; i < columnNames.length; i++) {
+			String columnName = columnNames[i];
+			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Column name:"+columnName);
+		}
+		while (cursor.moveToNext()) {
+			name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+			contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+
+			//We need to check to make sure they have a phone number
+			int hasPhone = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+			if (hasPhone==1)
+			{
+				Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId,null, null);
+				while (phones.moveToNext())
+				{
+					phone = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				}
+				phones.close();
+			}
+			contactsModelList.add(new ContactsModel(name,phone.isEmpty()?"n/a":phone));
+		}
+			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Contacts:"+contactsModelList.toString());
+
+		for (ContactsModel c : contactsModelList) {
+			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactName());
+			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactNumber());
+
+		}
 		return contactsModelList;
 	}
 
-
 	public void insertContact(){
-		
+
 	}
 
 

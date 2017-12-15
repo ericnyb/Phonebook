@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +17,9 @@ import com.ericbandiero.phonebook.code.AppConstant;
 
 public class MainActivity extends AppCompatActivity {
 
-	public static final String CONTACT_NAME = "CONTACT_NAME";
+	public static final String EXTRA_CONTACT_NAME = "CONTACT_NAME";
+	public static final String EXTRA_CONTACT_PHONE = "CONTACT_PHONE";
+
 	private Context contextActivity;
 	final private int request_code_add_contact=1;
 	@Override
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
 			if (resultCode == RESULT_OK) {
 				// The user picked a contact.
 				// The Intent's data Uri identifies which contact was selected.
-				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Data:"+contactInfo.getStringExtra(CONTACT_NAME));
+				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Data name:"+contactInfo.getStringExtra(EXTRA_CONTACT_NAME));
+				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Data phone:"+contactInfo.getStringExtra(EXTRA_CONTACT_PHONE));
 				// Do something with the contact here (bigger example below)
 			}
 		}
