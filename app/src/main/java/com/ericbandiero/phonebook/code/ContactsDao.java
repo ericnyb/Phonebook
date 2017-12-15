@@ -95,7 +95,7 @@ public class ContactsDao {
 
 		for (ContactsModel c : contactsModelList) {
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactName());
-			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactNumber());
+			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactPhoneNumber());
 
 		}
 		return contactsModelList;

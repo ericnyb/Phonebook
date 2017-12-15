@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,17 @@ public class AddContactActivity extends AppCompatActivity {
 		intent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
 		// Inserts a phone number
 		intent.putExtra(ContactsContract.Intents.Insert.NAME, editTextName.getText().toString());
+
+		String unFormattedPhone=editTextPhone.getText().toString();
+		String formattedPhone;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+			formattedPhone= PhoneNumberUtils.formatNumber(unFormattedPhone,"US");
+		}
+		else {
+			//TODO USe another format routine - regex
+			formattedPhone=unFormattedPhone;
+		}
+
 		intent.putExtra(ContactsContract.Intents.Insert.PHONE, editTextPhone.getText().toString());
 		//We will assume user is going to enter a mobile number.
 		intent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);

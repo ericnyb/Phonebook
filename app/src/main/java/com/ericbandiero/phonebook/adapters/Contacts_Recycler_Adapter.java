@@ -1,7 +1,9 @@
 package com.ericbandiero.phonebook.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,7 +105,7 @@ public class Contacts_Recycler_Adapter extends RecyclerView.Adapter<Contacts_Rec
 		TextView textViewValuePhone = viewHolder.holderTextViewPhone;
 
 		String contactName=contactsModel.getContactName();
-		String contactPhone=(contactsModel.getContactNumber().isEmpty()?"N/A":contactsModel.getContactNumber());
+		String contactPhone=(contactsModel.getContactPhoneNumber().isEmpty()?"N/A":contactsModel.getContactPhoneNumber());
 		textViewFieldName.setText("Name:"+contactName);
 		textViewValuePhone.setText("Phone:"+contactPhone);
 	}
@@ -166,6 +168,10 @@ public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.
 			ContactsModel contactsModel = contactsModelList.get(getAdapterPosition());
 			//TODO Dial the number for this contact
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Need to implement!");
+			Intent callIntent = new Intent(Intent.ACTION_DIAL);
+			String phoneNumber=contactsModel.getContactPhoneNumber();
+			callIntent.setData(Uri.parse("tel:"+phoneNumber));
+			mContext.startActivity(callIntent);
 		}
 	}
 }

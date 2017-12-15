@@ -7,12 +7,12 @@ package com.ericbandiero.phonebook.models;
 public class ContactsModel {
 
 	private String ContactName;
-	private String ContactNumber;
+	private String ContactPhoneNumber;
 
 
-	public ContactsModel(String contactName, String contactNumber) {
+	public ContactsModel(String contactName, String contactPhoneNumber) {
 		ContactName = contactName;
-		ContactNumber = contactNumber;
+		ContactPhoneNumber = contactPhoneNumber;
 	}
 
 	public String getContactName() {
@@ -23,11 +23,11 @@ public class ContactsModel {
 		ContactName = contactName;
 	}
 
-	public String getContactNumber() {
-		return ContactNumber;
+	public String getContactPhoneNumber() {
+		return ContactPhoneNumber;
 	}
 
-	public void setContactNumber(String contactNumber) {
-		ContactNumber = contactNumber;
+	public void setContactPhoneNumber(String contactPhoneNumber) {
+		ContactPhoneNumber = contactPhoneNumber;
 	}
 }
