@@ -100,10 +100,4 @@ public class ContactsDao {
 		}
 		return contactsModelList;
 	}
-
-	public void insertContact(){
-
-	}
-
-
 }
