@@ -19,7 +19,7 @@
 
     <!--Use our style for headings throughout the app-->
     <style name="HeadingTexts" >
-        <item name="android:textColor">@color/ForestGreen</item>
+        <item name="android:textColor">@color/DodgerBlue</item>
         <item name="android:typeface">normal</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
         <item name="android:textStyle">bold</item>
