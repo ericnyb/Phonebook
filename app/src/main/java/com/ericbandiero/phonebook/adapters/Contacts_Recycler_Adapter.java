@@ -106,7 +106,7 @@ public class Contacts_Recycler_Adapter extends RecyclerView.Adapter<Contacts_Rec
 
 		String contactName=contactsModel.getContactName();
 		String contactPhone=(contactsModel.getContactPhoneNumber().isEmpty()?"N/A":contactsModel.getContactPhoneNumber());
-		textViewFieldName.setText("Name:"+contactName);
+		textViewFieldName.setText("Name: "+contactName);
 		textViewValuePhone.setText("Phone:"+contactPhone);
 	}
 
