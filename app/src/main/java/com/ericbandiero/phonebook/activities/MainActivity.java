@@ -18,6 +18,9 @@ import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
 import com.ericbandiero.phonebook.code.AppConstant;
+import com.ericbandiero.phonebook.dagger.PhoneBookApp;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,11 +30,17 @@ public class MainActivity extends AppCompatActivity {
 	private Context contextActivity;
 	final private int request_code_add_contact=1;
 
+	@Inject
+	Context appContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		//Dagger
+		PhoneBookApp.app().basicComponent().inject(this);
+
 		contextActivity=this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -44,11 +53,6 @@ public class MainActivity extends AppCompatActivity {
 				startActivityForResult(intent,request_code_add_contact);
 			}
 		});
-
-
-
-
-
 	}
 
 	@Override
