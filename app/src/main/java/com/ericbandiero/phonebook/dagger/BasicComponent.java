@@ -1,5 +1,6 @@
 package com.ericbandiero.phonebook.dagger;
 
+import com.ericbandiero.phonebook.activities.AddContactActivity;
 import com.ericbandiero.phonebook.activities.MainActivity;
 
 import javax.inject.Singleton;
@@ -13,5 +14,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class})
 public interface BasicComponent {
-	void inject(MainActivity mainActivity);
+	void inject(AddContactActivity addContactActivity);
 }

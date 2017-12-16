@@ -16,10 +16,9 @@ public class PhoneBookApp extends Application {
 
 	@Override
 	public void onCreate() {
-		super.onCreate();
 		if (AppConstant.DEBUG) Log.d(new Object() { }.getClass().getEnclosingClass()+">","App created!");
+		super.onCreate();
 		app = this;
-
 		basicComponent = DaggerBasicComponent.builder()
 				.appModule(new AppModule(getApplicationContext()))
 				.build();
