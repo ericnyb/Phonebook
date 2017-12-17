@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.ericbandiero.phonebook.code.ContactsDao;
+import com.ericbandiero.phonebook.code.HandleClickFromRecyclerContactsModel;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
 import javax.inject.Singleton;
@@ -30,7 +31,8 @@ public class AppModule {
 		return context;
 	}
 
-	@Singleton @Provides
+	@Singleton
+	@Provides
 	public SharedPreferences provideSharedPreferences(Context context){
 		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
@@ -38,5 +40,11 @@ public class AppModule {
 	@Provides
 	public ContactsDao providesContactModel(){
 		return new ContactsDao();
+	}
+
+	@Singleton
+	@Provides
+	public HandleClickFromRecyclerContactsModel providesHandleClickFromRecyclerContactsModel(){
+		return new HandleClickFromRecyclerContactsModel();
 	}
 }

@@ -2,6 +2,7 @@ package com.ericbandiero.phonebook.dagger;
 
 import com.ericbandiero.phonebook.activities.AddContactActivity;
 import com.ericbandiero.phonebook.activities.MainActivity;
+import com.ericbandiero.phonebook.code.HandleClickFromRecyclerContactsModel;
 import com.ericbandiero.phonebook.fragments.MainActivityFragment;
 
 import javax.inject.Singleton;
@@ -18,4 +19,5 @@ public interface BasicComponent {
 	void inject(AddContactActivity addContactActivity);
 	void inject(MainActivity mainActivity);
 	void inject (MainActivityFragment mainActivityFragment);
+	void inject (HandleClickFromRecyclerContactsModel handleClickFromRecyclerContactsModel);
 }

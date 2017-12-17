@@ -17,6 +17,7 @@ import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
 import com.ericbandiero.phonebook.code.ContactsDao;
+import com.ericbandiero.phonebook.code.HandleClickFromRecyclerContactsModel;
 import com.ericbandiero.phonebook.dagger.PhoneBookApp;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
@@ -35,6 +36,9 @@ public class MainActivityFragment extends Fragment {
 
 	@Inject
 	ContactsDao contactsDao;
+
+	@Inject
+	HandleClickFromRecyclerContactsModel handleClickFromRecyclerContactsModel;
 
 	private TextView textViewHeader;
 
@@ -75,20 +79,14 @@ public class MainActivityFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		//Check for permissions before calling this
-		RecyclerView rvDataHolderTwoFields =  getView().findViewById(R.id.rvContacts);
-
+		RecyclerView rvContactsModel =  getView().findViewById(R.id.rvContacts);
 		List<ContactsModel> allContacts =contactsDao.getAllContacts(this.getActivity());
-
-		RecyclerView.ItemDecoration itemDecoration = new
-				DividerItemDecoration(this.getActivity(), VERTICAL);
-		Contacts_Recycler_Adapter adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity());
-
-		rvDataHolderTwoFields.setAdapter(adapter);
-		rvDataHolderTwoFields.addItemDecoration( itemDecoration);
+		RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getActivity(), VERTICAL);
+		Contacts_Recycler_Adapter adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
+		rvContactsModel.setAdapter(adapter);
+		rvContactsModel.addItemDecoration( itemDecoration);
 		// Set layout manager to position the items
-		rvDataHolderTwoFields.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
+		rvContactsModel.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 		if (allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
