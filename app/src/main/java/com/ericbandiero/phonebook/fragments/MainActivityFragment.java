@@ -72,6 +72,5 @@ public class MainActivityFragment extends Fragment {
 		if (allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
-
 	}
 }
