@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 	private Context contextActivity;
 	final private int request_code_add_contact=1;
 
-
+	@Inject
+	SharedPreferences sharedPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
+		//Dagger
+		PhoneBookApp.app().basicComponent().inject(this);
 
 	}
 
