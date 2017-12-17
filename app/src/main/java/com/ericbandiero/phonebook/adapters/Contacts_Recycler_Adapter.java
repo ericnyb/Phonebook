@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.code.AppConstant;
+import com.ericbandiero.phonebook.interfaces.IHandleClickFromRecycler;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
 import java.util.List;
@@ -34,8 +35,10 @@ public class Contacts_Recycler_Adapter extends RecyclerView.Adapter<Contacts_Rec
 	private int totalBackColorTotalField = Color.WHITE;
 	private int totalBackColorTotalValue = Color.WHITE;
 	private List<ContactsModel> contactsModelList;
+	private IHandleClickFromRecycler handleClickFromRecycler;
 	// Store the context for easy access
 	private Context mContext;
+
 
 	public Contacts_Recycler_Adapter(List<ContactsModel> contactsModelList, Context mContext) {
 		this.contactsModelList = contactsModelList;
@@ -43,6 +46,13 @@ public class Contacts_Recycler_Adapter extends RecyclerView.Adapter<Contacts_Rec
 		this.mContext = mContext;
 		setUpData();
 	}
+
+	public Contacts_Recycler_Adapter(List<ContactsModel> contactsModelList, Context mContext, IHandleClickFromRecycler iHandleClickFromRecycler) {
+		this(contactsModelList,mContext);
+		this.handleClickFromRecycler=iHandleClickFromRecycler;
+		setUpData();
+	}
+
 
 	private void setUpData(){
 
@@ -165,13 +175,9 @@ public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.
 
 		@Override
 		public void onClick(View view) {
-			ContactsModel contactsModel = contactsModelList.get(getAdapterPosition());
-			//TODO Dial the number for this contact
-			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Need to implement!");
-			Intent callIntent = new Intent(Intent.ACTION_DIAL);
-			String phoneNumber=contactsModel.getContactPhoneNumber();
-			callIntent.setData(Uri.parse("tel:"+phoneNumber));
-			mContext.startActivity(callIntent);
+			if (handleClickFromRecycler != null) {
+				handleClickFromRecycler.handleClick(mContext,view,contactsModelList.get(getAdapterPosition()));
+			}
 		}
 	}
 }
