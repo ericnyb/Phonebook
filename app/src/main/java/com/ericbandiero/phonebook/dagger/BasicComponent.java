@@ -15,4 +15,5 @@ import dagger.Component;
 @Component(modules = {AppModule.class})
 public interface BasicComponent {
 	void inject(AddContactActivity addContactActivity);
+	void inject(MainActivity mainActivity);
 }
