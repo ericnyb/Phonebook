@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.ericbandiero.phonebook.code.ContactsDao;
+import com.ericbandiero.phonebook.models.ContactsModel;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -30,5 +33,10 @@ public class AppModule {
 	@Singleton @Provides
 	public SharedPreferences provideSharedPreferences(Context context){
 		return PreferenceManager.getDefaultSharedPreferences(context);
+	}
+
+	@Provides
+	public ContactsDao providesContactModel(){
+		return new ContactsDao();
 	}
 }

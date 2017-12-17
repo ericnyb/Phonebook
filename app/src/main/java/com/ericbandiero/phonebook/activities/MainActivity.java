@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 	@Inject
 	SharedPreferences sharedPreferences;
 
+	@Inject
+	Context contextApp;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

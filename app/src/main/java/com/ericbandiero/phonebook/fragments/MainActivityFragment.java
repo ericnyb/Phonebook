@@ -1,5 +1,6 @@
 package com.ericbandiero.phonebook.fragments;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,12 @@ import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
 import com.ericbandiero.phonebook.code.ContactsDao;
+import com.ericbandiero.phonebook.dagger.PhoneBookApp;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
@@ -28,11 +32,27 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 public class MainActivityFragment extends Fragment {
 
 	//TODO Make this a dagger injection
-	ContactsDao contactsDao=new ContactsDao();
+
+	@Inject
+	ContactsDao contactsDao;
+
 	private TextView textViewHeader;
 
 	public MainActivityFragment() {
 
+	}
+
+	/**
+	 * Called when a fragment is first attached to its context.
+	 * {@link #onCreate(Bundle)} will be called after this.
+	 *
+	 * @param context
+	 */
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		//Dagger
+		PhoneBookApp.app().basicComponent().inject(this);
 	}
 
 	@Override
