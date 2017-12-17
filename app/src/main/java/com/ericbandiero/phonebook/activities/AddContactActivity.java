@@ -110,10 +110,16 @@ public class AddContactActivity extends AppCompatActivity {
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","request code:"+requestCode);
 		if (requestCode==REQUEST_CODE_FOR_ADD_CONTACT){
 			if (resultCode==RESULT_OK){
 				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","result code:"+resultCode);
 				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","data:"+data.getDataString());
+				Intent resultIntent=new Intent();
+				resultIntent.putExtra(MainActivity.EXTRA_CONTACT_NAME, editTextName.getText().toString());
+				resultIntent.putExtra(MainActivity.EXTRA_CONTACT_PHONE, editTextPhone.getText().toString());
+				setResult(MainActivity.RESULT_OK, resultIntent);
+				finish();
 			}
 			else{
 				UtilityPhone.toastShowLong(this,"User did not add contact...");

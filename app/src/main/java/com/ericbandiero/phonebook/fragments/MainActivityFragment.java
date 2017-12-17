@@ -42,6 +42,10 @@ public class MainActivityFragment extends Fragment {
 
 	private TextView textViewHeader;
 
+	private List<ContactsModel> allContacts;
+
+	private Contacts_Recycler_Adapter adapter;
+
 	public MainActivityFragment() {
 
 	}
@@ -80,9 +84,9 @@ public class MainActivityFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		RecyclerView rvContactsModel =  getView().findViewById(R.id.rvContacts);
-		List<ContactsModel> allContacts =contactsDao.getAllContacts(this.getActivity());
+		allContacts =contactsDao.getAllContacts(this.getActivity());
 		RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getActivity(), VERTICAL);
-		Contacts_Recycler_Adapter adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
+		adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
 		rvContactsModel.setAdapter(adapter);
 		rvContactsModel.addItemDecoration( itemDecoration);
 		// Set layout manager to position the items
@@ -90,5 +94,10 @@ public class MainActivityFragment extends Fragment {
 		if (allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
+	}
+
+	public void insertNewContact(String name,String phoneNumber){
+		allContacts.add(new ContactsModel(name,phoneNumber));
+		adapter.notifyDataSetChanged();
 	}
 }

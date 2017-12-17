@@ -24,8 +24,6 @@ public class HandleClickFromRecyclerContactsModel implements IHandleClickFromRec
 	@Override
 	public void handleClick(Context context, View view, Object object) {
 		ContactsModel contactsModel = (ContactsModel)object;
-		if (AppConstant.DEBUG)
-			Log.d(this.getClass().getSimpleName() + ">", "Need to implement!");
 		Intent callIntent = new Intent(Intent.ACTION_DIAL);
 		String phoneNumber = contactsModel.getContactPhoneNumber();
 		callIntent.setData(Uri.parse("tel:" + phoneNumber));

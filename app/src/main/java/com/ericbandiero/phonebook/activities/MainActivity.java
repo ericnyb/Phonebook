@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
 import com.ericbandiero.phonebook.code.AppConstant;
 import com.ericbandiero.phonebook.dagger.PhoneBookApp;
+import com.ericbandiero.phonebook.fragments.MainActivityFragment;
 
 import javax.inject.Inject;
 
@@ -89,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 		if (requestCode == request_code_add_contact) {
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
+				MainActivityFragment mainActivityFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+				mainActivityFragment.insertNewContact(contactInfo.getStringExtra(EXTRA_CONTACT_NAME),contactInfo.getStringExtra(EXTRA_CONTACT_PHONE));
 				// The user picked a contact.
 				// The Intent's data Uri identifies which contact was selected.
 				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Data name:"+contactInfo.getStringExtra(EXTRA_CONTACT_NAME));
