@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Phonebook</string>
-    <string name="action_settings">Settings</string>
     <string name="greeting">Welcome to Phonebook</string>
-    <string name="setting_not_yet_implemented">Would add plenty of user settings in real app!</string>
-    <string name="add_contact_name">Name:</string>
+     <string name="add_contact_name">Name:</string>
     <string name="contact_row_name_prefix">Name:</string>
     <string name="contact_row_phone_prefix">Phone:</string>
     <string name="contacts_list">Contacts List</string>
-</resources>
+    <string name="submit">Add Contact</string>
+
+    <!--Menus-->
+    <string name="action_settings">Settings</string>
+    <string name="menu_goto_top">Go to First</string>
+    <string name="menu_goto_bottom">Go to Last</string>
+    <string name="setting_not_yet_implemented">Would add plenty of user settings in real app!</string>
+    </resources>

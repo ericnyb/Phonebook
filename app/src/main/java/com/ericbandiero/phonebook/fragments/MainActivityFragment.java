@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
+import com.ericbandiero.phonebook.code.AppConstant;
 import com.ericbandiero.phonebook.code.ContactsDao;
 import com.ericbandiero.phonebook.code.HandleClickFromRecyclerContactsModel;
 import com.ericbandiero.phonebook.dagger.PhoneBookApp;
@@ -45,6 +47,8 @@ public class MainActivityFragment extends Fragment {
 	private List<ContactsModel> allContacts;
 
 	private Contacts_Recycler_Adapter adapter;
+
+	private RecyclerView rvContactsModelView;
 
 	public MainActivityFragment() {
 
@@ -83,14 +87,14 @@ public class MainActivityFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		RecyclerView rvContactsModel =  getView().findViewById(R.id.rvContacts);
+		rvContactsModelView =  getView().findViewById(R.id.rvContacts);
 		allContacts =contactsDao.getAllContacts(this.getActivity());
 		RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getActivity(), VERTICAL);
 		adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
-		rvContactsModel.setAdapter(adapter);
-		rvContactsModel.addItemDecoration( itemDecoration);
+		rvContactsModelView.setAdapter(adapter);
+		rvContactsModelView.addItemDecoration( itemDecoration);
 		// Set layout manager to position the items
-		rvContactsModel.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+		rvContactsModelView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 		if (allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
@@ -99,5 +103,17 @@ public class MainActivityFragment extends Fragment {
 	public void insertNewContact(String name,String phoneNumber){
 		allContacts.add(new ContactsModel(name,phoneNumber));
 		adapter.notifyDataSetChanged();
+	}
+
+	public void GotoBottomOfList(){
+		if(!allContacts.isEmpty()) {
+			rvContactsModelView.scrollToPosition(allContacts.size() - 1);
+		}
+	}
+
+	public void gotoTopOfList(){
+		if (allContacts.size()>0) {
+			rvContactsModelView.scrollToPosition(0);
+		}
 	}
 }
