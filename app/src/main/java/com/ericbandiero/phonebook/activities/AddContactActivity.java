@@ -1,6 +1,7 @@
 package com.ericbandiero.phonebook.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.code.AppConstant;
+import com.ericbandiero.phonebook.dagger.PhoneBookApp;
+
+import javax.inject.Inject;
 
 public class AddContactActivity extends AppCompatActivity {
 
@@ -21,11 +25,19 @@ public class AddContactActivity extends AppCompatActivity {
 	private EditText editTextName;
 	private EditText editTextPhone;
 
+	@Inject
+	SharedPreferences sharedPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_contact);
+
+		//Dagger
+		PhoneBookApp.app().basicComponent().inject(this);
+
+
+
 		editTextName=findViewById(R.id.act_add_edit_name);
 		editTextPhone=findViewById(R.id.act_add_edit_phone);
 

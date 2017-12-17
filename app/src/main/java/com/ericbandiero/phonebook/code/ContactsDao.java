@@ -15,6 +15,7 @@ import android.util.Log;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,6 +93,8 @@ public class ContactsDao {
 			contactsModelList.add(new ContactsModel(name,phone.isEmpty()?"n/a":phone));
 		}
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Contacts:"+contactsModelList.toString());
+
+		Collections.sort(contactsModelList, (ContactsModel c1, ContactsModel c2) -> c1.getContactName().compareTo(c2.getContactName()));
 
 		for (ContactsModel c : contactsModelList) {
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactName());

@@ -2,6 +2,7 @@ package com.ericbandiero.phonebook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import com.ericbandiero.phonebook.R;
 import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.adapters.Contacts_Recycler_Adapter;
 import com.ericbandiero.phonebook.code.AppConstant;
+import com.ericbandiero.phonebook.dagger.PhoneBookApp;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
 	private Context contextActivity;
 	final private int request_code_add_contact=1;
 
+	@Inject
+	SharedPreferences sharedPreferences;
+
+	@Inject
+	Context contextApp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		contextActivity=this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -45,9 +55,8 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-
-
-
+		//Dagger
+		PhoneBookApp.app().basicComponent().inject(this);
 
 	}
 
