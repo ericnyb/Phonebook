@@ -42,8 +42,6 @@ public class AddContactActivity extends AppCompatActivity {
 		//Dagger
 		PhoneBookApp.app().basicComponent().inject(this);
 
-
-
 		editTextName=findViewById(R.id.act_add_edit_name);
 		editTextPhone=findViewById(R.id.act_add_edit_phone);
 
