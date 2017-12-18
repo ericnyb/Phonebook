@@ -1,7 +1,10 @@
 package com.ericbandiero.phonebook.activities;
 
+import android.content.ContentProviderOperation;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
+import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +19,15 @@ import com.ericbandiero.phonebook.Utils.UtilityPhone;
 import com.ericbandiero.phonebook.code.AppConstant;
 import com.ericbandiero.phonebook.dagger.PhoneBookApp;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 public class AddContactActivity extends AppCompatActivity {
 
 	public static final int REQUEST_CODE_FOR_ADD_CONTACT = 10023;
-	private Button buttonOk;
+	private Button buttonAddViaContacts;
+	private Button buttonAddAuto;
 	private EditText editTextName;
 	private EditText editTextPhone;
 
@@ -41,33 +47,28 @@ public class AddContactActivity extends AppCompatActivity {
 		editTextName=findViewById(R.id.act_add_edit_name);
 		editTextPhone=findViewById(R.id.act_add_edit_phone);
 
-		buttonOk = findViewById(R.id.button_act_ok);
-		buttonOk.setOnClickListener((View v) -> {
+		buttonAddViaContacts = findViewById(R.id.button_act_ok);
+		buttonAddAuto = findViewById(R.id.button_act_auto_add);
 
-			/*
-			Intent intent = new Intent();
-			intent.putExtra(MainActivity.EXTRA_CONTACT_NAME, "Testing name");
-			intent.putExtra(MainActivity.EXTRA_CONTACT_PHONE, "Testing phone");
-			setResult(RESULT_OK, intent);
-			finish();//finishing activity
-			*/
-			addContact();
+		buttonAddViaContacts.setOnClickListener((View v) -> {
+			addContact(false);
 		});
+
+		buttonAddAuto.setOnClickListener((View v)->{
+			addContact(true);
+		});
+
 	}
 
-	private void addContact() {
+	private void addContact(boolean autoAdd) {
+
 		//TODO Put in actual validation
 		if (!validateName(editTextName.getText().toString()) | !validatePhone(editTextPhone.getText().toString())){
 			UtilityPhone.toastShowLong(this,getString(R.string.contact_data_not_valid));
 			return;
 		}
 
-		// Creates a new Intent
-		Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
-		// Sets the MIME type to match the Contacts Provider
-		intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-		// Inserts a name
-		intent.putExtra(ContactsContract.Intents.Insert.NAME, editTextName.getText().toString());
+		String nameToInsert=editTextName.getText().toString();
 
 		String unFormattedPhone=editTextPhone.getText().toString();
 		String formattedPhone;
@@ -81,14 +82,25 @@ public class AddContactActivity extends AppCompatActivity {
 
 		editTextPhone.setText(formattedPhone);
 
-		//Insert phone number
-		intent.putExtra(ContactsContract.Intents.Insert.PHONE, formattedPhone);
-		//We will assume user is going to enter a mobile number.
-		intent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
-		//This is so we come back to our activity
-		intent.putExtra("finishActivityOnSaveCompleted", true);
-		startActivityForResult(intent, REQUEST_CODE_FOR_ADD_CONTACT);
+		if (autoAdd){
+			writeContact(nameToInsert,formattedPhone);
+		}
 
+		else {
+			// Creates a new Intent
+			Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+			// Sets the MIME type to match the Contacts Provider
+			intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+			// Inserts a name
+			intent.putExtra(ContactsContract.Intents.Insert.NAME, nameToInsert);
+			//Insert phone number
+			intent.putExtra(ContactsContract.Intents.Insert.PHONE, formattedPhone);
+			//We will assume user is going to enter a mobile number.
+			intent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+			//This is so we come back to our activity
+			intent.putExtra("finishActivityOnSaveCompleted", true);
+			startActivityForResult(intent, REQUEST_CODE_FOR_ADD_CONTACT);
+		}
 	}
 	public boolean validateName(String name){
 		return !name.isEmpty();
@@ -126,6 +138,29 @@ public class AddContactActivity extends AppCompatActivity {
 			else{
 				UtilityPhone.toastShowLong(this,"User did not add contact...");
 			}
+		}
+	}
+
+	private void writeContact(String displayName, String number) {
+		ArrayList contentProviderOperations = new ArrayList();
+		//insert raw contact using RawContacts.CONTENT_URI
+		contentProviderOperations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+				.withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null).withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
+		//insert contact display name using Data.CONTENT_URI
+		contentProviderOperations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+				.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0).withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+				.withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, displayName).build());
+		//insert mobile number using Data.CONTENT_URI
+		contentProviderOperations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+				.withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0).withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+				.withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number).withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE).build());
+		try {
+			getApplicationContext().getContentResolver().
+					applyBatch(ContactsContract.AUTHORITY, contentProviderOperations);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (OperationApplicationException e) {
+			e.printStackTrace();
 		}
 	}
 }

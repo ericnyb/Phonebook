@@ -5,7 +5,7 @@
     <string name="contact_row_name_prefix">Name:</string>
     <string name="contact_row_phone_prefix">Phone:</string>
     <string name="contacts_list">Contacts List</string>
-    <string name="submit">Add Contact</string>
+    <string name="submit">Add Contact via Contacts App</string>
 
     <!--Menus-->
     <string name="action_settings">Settings</string>
@@ -15,4 +15,5 @@
     <string name="permission_contacts_rationale">You need to allow read access to contacts for this application to work.</string>
     <string name="ok">OK</string>
     <string name="contact_data_not_valid">You must have a valid name and phone number!</string>
+    <string name="auto_add">Auto Add Contact</string>
 </resources>
