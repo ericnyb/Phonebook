@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Eric Bandiero on 12/15/2017.
  */
 
-public class ContactsDao implements  {
+public class ContactsDao {
 
 	final private int MY_PERMISSIONS_REQUEST_READ_CONTACTS=12345;
 
@@ -46,6 +46,7 @@ public class ContactsDao implements  {
 	}
 
 	public List<ContactsModel> getAllContacts(final Activity context){
+		/*
 		final String[] permissions = new String[]{Manifest.permission.READ_CONTACTS};
 		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 			if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.READ_CONTACTS)) {
@@ -65,7 +66,7 @@ public class ContactsDao implements  {
 				return null;
 			}
 		}
-
+*/
 
 		//getContactsRxJava(context).subscribe(s->showResults(s));
 

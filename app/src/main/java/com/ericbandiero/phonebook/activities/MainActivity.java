@@ -3,7 +3,9 @@ package com.ericbandiero.phonebook.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private MainActivityFragment mainActivityFragment;
 
+	private final int REQUEST_CONTACTS=1;
 	@Inject
 	SharedPreferences sharedPreferences;
 
