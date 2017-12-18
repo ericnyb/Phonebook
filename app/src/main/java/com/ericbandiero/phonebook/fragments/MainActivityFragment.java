@@ -66,7 +66,7 @@ public class MainActivityFragment extends Fragment {
 	private final int REQUEST_CONTACTS=1;
 
 
-	private static String[] PERMISSIONS_CONTACT = {Manifest.permission.READ_CONTACTS};
+	private static String[] PERMISSIONS_CONTACT = {Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS};
 
 	public MainActivityFragment() {
 
@@ -127,7 +127,8 @@ public class MainActivityFragment extends Fragment {
 		rvContactsModelView = getView().findViewById(R.id.rvContacts);
 
 		if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.READ_CONTACTS)
-				!= PackageManager.PERMISSION_GRANTED) {
+				!= PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_CONTACTS)
+				!= PackageManager.PERMISSION_GRANTED){
 			// Contacts permissions have not been granted.
 			if (AppConstant.DEBUG)
 				Log.d(this.getClass().getSimpleName() + ">", "Contact permissions has NOT been granted. Requesting permissions.");
@@ -183,7 +184,8 @@ public class MainActivityFragment extends Fragment {
 	private void requestContactsPermissions() {
 		// BEGIN_INCLUDE(contacts_permission_request)
 		if (ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(),
-				Manifest.permission.READ_CONTACTS)) {
+				Manifest.permission.READ_CONTACTS)||ActivityCompat.shouldShowRequestPermissionRationale(this.getActivity(),
+				Manifest.permission.WRITE_CONTACTS)) {
 
 			// Provide an additional rationale to the user if the permission was not granted
 			// and the user would benefit from additional context for the use of the permission.
@@ -197,20 +199,6 @@ public class MainActivityFragment extends Fragment {
 					requestPermissions(PERMISSIONS_CONTACT, REQUEST_CONTACTS);
 				}
 			});
-			/*
-			// Display a SnackBar with an explanation and a button to trigger the request.
-			Snackbar.make(this.getView(), R.string.permission_contacts_rationale,
-					Snackbar.LENGTH_INDEFINITE)
-					.setAction(R.string.ok, new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							ActivityCompat
-									.requestPermissions(getActivity(), PERMISSIONS_CONTACT,
-											REQUEST_CONTACTS);
-						}
-					})
-					.show();
-			*/
 		} else {
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Will request permissions...");
 			// Contact permissions have not been granted yet. Request them directly.
@@ -237,7 +225,7 @@ public class MainActivityFragment extends Fragment {
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Permission results from fragment...");
 		if (requestCode==REQUEST_CONTACTS){
-			if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+			if(grantResults[0]== PackageManager.PERMISSION_GRANTED & grantResults[1]==PackageManager.PERMISSION_GRANTED){
 				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Permission granted!");
 				Observable<List<ContactsModel>> contactsRxJava = contactsDao.getContactsRxJava(this.getActivity());
 				if (contactsRxJava != null) {
