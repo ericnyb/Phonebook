@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -85,13 +86,17 @@ public class UtilityPhone {
 		}
 	}
 
-	public static final boolean checkPhoneIsValid(String phone){
-		if (phone.isEmpty()){
+	public static final boolean checkPhoneIsValid(String phone) {
+		if (phone.isEmpty()) {
 			return false;
 		}
-		else{
-			return true;
-		}
-	}
 
+		int len = phone.length();
+		for (int i = 0; i < len; i++) {
+			if (!PhoneNumberUtils.isDialable(phone.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

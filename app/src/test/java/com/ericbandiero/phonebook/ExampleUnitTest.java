@@ -26,5 +26,4 @@ public class ExampleUnitTest {
 	public void checkValid() throws Exception {
 		assertTrue(UtilityPhone.checkNameIsValid("Test name"));
 	}
-
 }
