@@ -26,6 +26,7 @@ import com.ericbandiero.phonebook.code.AppConstant;
 import com.ericbandiero.phonebook.code.ContactsDao;
 import com.ericbandiero.phonebook.code.HandleClickFromRecyclerContactsModel;
 import com.ericbandiero.phonebook.dagger.PhoneBookApp;
+import com.ericbandiero.phonebook.interfaces.ICommand;
 import com.ericbandiero.phonebook.models.ContactsModel;
 
 import java.security.Permission;
@@ -190,6 +191,13 @@ public class MainActivityFragment extends Fragment {
 			if (AppConstant.DEBUG)
 				Log.d(this.getClass().getSimpleName() + ">", "Displaying contacts permission rationale to provide additional context.");
 
+			UtilityPhone.AlertMessageSimple(this.getContext(), "Contacts Permission Needed", getString( R.string.permission_contacts_rationale), new ICommand() {
+				@Override
+				public void execute() {
+					requestPermissions(PERMISSIONS_CONTACT, REQUEST_CONTACTS);
+				}
+			});
+			/*
 			// Display a SnackBar with an explanation and a button to trigger the request.
 			Snackbar.make(this.getView(), R.string.permission_contacts_rationale,
 					Snackbar.LENGTH_INDEFINITE)
@@ -202,6 +210,7 @@ public class MainActivityFragment extends Fragment {
 						}
 					})
 					.show();
+			*/
 		} else {
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Will request permissions...");
 			// Contact permissions have not been granted yet. Request them directly.
