@@ -100,11 +100,12 @@ public class AddContactActivity extends AppCompatActivity {
 			startActivityForResult(intent, REQUEST_CODE_FOR_ADD_CONTACT);
 		}
 	}
+
 	public boolean validateName(String name){
-		return !name.isEmpty();
+		return UtilityPhone.checkNameIsValid(name);
 	}
 	public boolean validatePhone(String phone){
-		return !phone.isEmpty();
+		return UtilityPhone.checkPhoneIsValid(phone);
 	}
 
 	@Override
