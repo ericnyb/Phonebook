@@ -76,21 +76,21 @@ public class UtilityPhone {
 		alertDialog.show();
 	}
 
-	public static final boolean checkName(String name){
+	public static final boolean checkNameIsValid(String name){
 		if (name.isEmpty()){
-			return true;
+			return false;
 		}
 		else{
-			return false;
+			return true;
 		}
 	}
 
-	public static final boolean checkPhone(String phone){
+	public static final boolean checkPhoneIsValid(String phone){
 		if (phone.isEmpty()){
-			return true;
+			return false;
 		}
 		else{
-			return false;
+			return true;
 		}
 	}
 

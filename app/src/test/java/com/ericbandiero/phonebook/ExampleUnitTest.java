@@ -1,5 +1,7 @@
 package com.ericbandiero.phonebook;
 
+import com.ericbandiero.phonebook.Utils.UtilityPhone;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +16,15 @@ public class ExampleUnitTest {
 	public void addition_isCorrect() throws Exception {
 		assertEquals(4, 2 + 2);
 	}
+
+	@Test
+	public void checkValidNameEmpty() throws Exception {
+		assertFalse(UtilityPhone.checkNameIsValid(""));
+	}
+
+	@Test
+	public void checkValid() throws Exception {
+		assertTrue(UtilityPhone.checkNameIsValid("Test name"));
+	}
+
 }

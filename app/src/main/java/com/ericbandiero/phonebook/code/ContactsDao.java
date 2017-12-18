@@ -44,42 +44,6 @@ public class ContactsDao {
 	public ContactsDao() {
 
 	}
-
-	public List<ContactsModel> getAllContacts(final Activity context){
-		/*
-		final String[] permissions = new String[]{Manifest.permission.READ_CONTACTS};
-		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-			if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.READ_CONTACTS)) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setMessage("To use this app you need to allow access to your contacts.");
-				builder.setTitle("Read Contacts");
-				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						ActivityCompat.requestPermissions(context, permissions,MY_PERMISSIONS_REQUEST_READ_CONTACTS );
-					}
-				});
-				builder.show();
-			} else {
-				// if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Requesting permissions...");
-				ActivityCompat.requestPermissions(context, permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-				return null;
-			}
-		}
-*/
-
-		//getContactsRxJava(context).subscribe(s->showResults(s));
-
-
-		//return contactsRxJava.blockingFirst();
-
-		return allContacts(context);
-	}
-
-	private void showResults(List<ContactsModel> m){
-		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","List return from rx:"+m.size());
-	}
-
 	public Observable<List<ContactsModel>> getContactsRxJava(Activity context) {
 		final String[] permissions = new String[]{Manifest.permission.READ_CONTACTS};
 		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -140,15 +104,9 @@ public class ContactsDao {
 			}
 			contactsModelList.add(new ContactsModel(name,phone.isEmpty()?"n/a":phone));
 		}
-			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Contacts:"+contactsModelList.toString());
 
 		Collections.sort(contactsModelList, (ContactsModel c1, ContactsModel c2) -> c1.getContactName().toUpperCase().compareTo(c2.getContactName().toUpperCase()));
 
-		for (ContactsModel c : contactsModelList) {
-			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactName());
-			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactPhoneNumber());
-
-		}
 		return contactsModelList;
 	}
 
