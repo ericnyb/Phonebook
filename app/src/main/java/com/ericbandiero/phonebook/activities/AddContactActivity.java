@@ -42,8 +42,6 @@ public class AddContactActivity extends AppCompatActivity {
 		//Dagger
 		PhoneBookApp.app().basicComponent().inject(this);
 
-
-
 		editTextName=findViewById(R.id.act_add_edit_name);
 		editTextPhone=findViewById(R.id.act_add_edit_phone);
 
@@ -157,6 +155,11 @@ public class AddContactActivity extends AppCompatActivity {
 		try {
 			getApplicationContext().getContentResolver().
 					applyBatch(ContactsContract.AUTHORITY, contentProviderOperations);
+			Intent resultIntent=new Intent();
+			resultIntent.putExtra(MainActivity.EXTRA_CONTACT_NAME, displayName);
+			resultIntent.putExtra(MainActivity.EXTRA_CONTACT_PHONE, number);
+			setResult(MainActivity.RESULT_OK, resultIntent);
+			finish();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (OperationApplicationException e) {
