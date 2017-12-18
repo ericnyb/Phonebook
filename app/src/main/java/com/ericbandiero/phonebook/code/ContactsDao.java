@@ -142,7 +142,7 @@ public class ContactsDao {
 		}
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Contacts:"+contactsModelList.toString());
 
-		Collections.sort(contactsModelList, (ContactsModel c1, ContactsModel c2) -> c1.getContactName().compareTo(c2.getContactName()));
+		Collections.sort(contactsModelList, (ContactsModel c1, ContactsModel c2) -> c1.getContactName().toUpperCase().compareTo(c2.getContactName().toUpperCase()));
 
 		for (ContactsModel c : contactsModelList) {
 			if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">",c.getContactName());
