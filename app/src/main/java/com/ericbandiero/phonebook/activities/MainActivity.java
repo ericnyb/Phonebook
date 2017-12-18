@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,15 +25,21 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
+	//Contacts
 	public static final String EXTRA_CONTACT_NAME = "CONTACT_NAME";
 	public static final String EXTRA_CONTACT_PHONE = "CONTACT_PHONE";
-
-	private Context contextActivity;
+	final private int REQUEST_CONTACTS=1;
 	final private int request_code_add_contact=1;
+
+	//For saving a variable
+	final private String SAVE_TEST_VARIABLE="save_test";
+	private String savedString;
+
+	//Activity context
+	private Context contextActivity;
 
 	private MainActivityFragment mainActivityFragment;
 
-	private final int REQUEST_CONTACTS=1;
 	@Inject
 	SharedPreferences sharedPreferences;
 
@@ -48,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		setTitle("");
-
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+ 		FloatingActionButton fab = findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -114,5 +119,18 @@ public class MainActivity extends AppCompatActivity {
 				// Do something with the contact here (bigger example below)
 			}
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+		super.onSaveInstanceState(outState, outPersistentState);
+		savedString="A sample saved variable";
+		outState.putString(SAVE_TEST_VARIABLE,savedString);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		savedString=savedInstanceState.getString(SAVE_TEST_VARIABLE);
 	}
 }
