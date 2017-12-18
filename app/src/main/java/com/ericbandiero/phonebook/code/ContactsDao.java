@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Eric Bandiero on 12/15/2017.
  */
 
-public class ContactsDao {
+public class ContactsDao implements  {
 
 	final private int MY_PERMISSIONS_REQUEST_READ_CONTACTS=12345;
 
@@ -67,7 +67,7 @@ public class ContactsDao {
 		}
 
 
-		getContactsRxJava(context).subscribe(s->showResults(s));
+		//getContactsRxJava(context).subscribe(s->showResults(s));
 
 
 		//return contactsRxJava.blockingFirst();
@@ -79,8 +79,32 @@ public class ContactsDao {
 		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","List return from rx:"+m.size());
 	}
 
-	private Observable<List<ContactsModel>> getContactsRxJava(Activity context) {
-		return Observable.fromCallable(() -> allContacts(context)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+	public Observable<List<ContactsModel>> getContactsRxJava(Activity context) {
+		final String[] permissions = new String[]{Manifest.permission.READ_CONTACTS};
+		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.READ_CONTACTS)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage("To use this app you need to allow access to your contacts.");
+				builder.setTitle("Read Contacts");
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ActivityCompat.requestPermissions(context, permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+					}
+				});
+				builder.show();
+			} else {
+				// if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Requesting permissions...");
+				ActivityCompat.requestPermissions(context, permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+			}
+		} else {
+			return Observable.fromCallable(() -> {
+				if (AppConstant.DEBUG)
+					Log.d(this.getClass().getSimpleName() + ">", "Thread:" + Thread.currentThread().getName());
+				return allContacts(context);
+			}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+		}
+		return null;
 	}
 
 	/*

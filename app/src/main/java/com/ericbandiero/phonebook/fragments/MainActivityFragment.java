@@ -27,6 +27,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 /**
@@ -49,6 +52,9 @@ public class MainActivityFragment extends Fragment {
 	private Contacts_Recycler_Adapter adapter;
 
 	private RecyclerView rvContactsModelView;
+
+	private Disposable disposable;
+
 
 	public MainActivityFragment() {
 
@@ -107,17 +113,24 @@ public class MainActivityFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		rvContactsModelView =  getView().findViewById(R.id.rvContacts);
-		allContacts = contactsDao.getAllContacts(this.getActivity());
+		//allContacts = contactsDao.getAllContacts(this.getActivity());
+		Observable<List<ContactsModel>> contactsRxJava = contactsDao.getContactsRxJava(this.getActivity());
+		if (contactsRxJava!=null) {
+			contactsRxJava.subscribe(s -> setUpData(s));
+		}
+	}
+	public void setUpData(List<ContactsModel> contactsModelsList){
+		allContacts=contactsModelsList;
 		RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getActivity(), VERTICAL);
-		adapter=new Contacts_Recycler_Adapter(allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
+		adapter=new Contacts_Recycler_Adapter(this.allContacts,this.getActivity(),handleClickFromRecyclerContactsModel);
 		rvContactsModelView.setAdapter(adapter);
 		rvContactsModelView.addItemDecoration( itemDecoration);
 		// Set layout manager to position the items
 		rvContactsModelView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-		if (allContacts.isEmpty()){
+		if (this.allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
-
+		//disposable.dispose();
 	}
 
 	public void insertNewContact(String name, String phoneNumber){
