@@ -60,6 +60,6 @@
         android:layout_alignParentLeft="false"
         android:layout_below="@+id/act_add_edit_phone"
         android:layout_centerInParent="true"
-        android:text="Submit" />
+        android:text="@string/submit" />
 </RelativeLayout>
 
