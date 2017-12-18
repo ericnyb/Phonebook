@@ -104,8 +104,6 @@ public class MainActivityFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-
 	}
 
 	/**
@@ -124,6 +122,11 @@ public class MainActivityFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState != null) {
+			//Restore the fragment's state here
+		}
+
 		rvContactsModelView = getView().findViewById(R.id.rvContacts);
 
 		if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.READ_CONTACTS)
@@ -146,9 +149,14 @@ public class MainActivityFragment extends Fragment {
 			}
 		}
 	}
-	public void getContactsInfo(){
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//Save the fragment's state here
 	}
+
+
 
 	public void setUpData(List<ContactsModel> contactsModelsList){
 		allContacts=contactsModelsList;
