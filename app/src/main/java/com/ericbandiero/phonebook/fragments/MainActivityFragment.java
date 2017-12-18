@@ -1,6 +1,7 @@
 package com.ericbandiero.phonebook.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -129,9 +130,20 @@ public class MainActivityFragment extends Fragment {
 		if (savedInstanceState != null) {
 			//Restore the fragment's state here
 		}
+	}
 
+
+	/**
+	 * Called when the fragment is visible to the user and actively running.
+	 * This is generally
+	 * tied to {@link Activity#onResume() Activity.onResume} of the containing
+	 * Activity's lifecycle.
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","In on resume...");
 		rvContactsModelView = getView().findViewById(R.id.rvContacts);
-
 		if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.READ_CONTACTS)
 				!= PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_CONTACTS)
 				!= PackageManager.PERMISSION_GRANTED){
@@ -151,18 +163,6 @@ public class MainActivityFragment extends Fragment {
 				contactsRxJava.subscribe(s -> setUpData(s));
 			}
 		}
-	}
-
-
-	/**
-	 * Called when the fragment is visible to the user and actively running.
-	 * This is generally
-	 * tied to {@link Activity#onResume() Activity.onResume} of the containing
-	 * Activity's lifecycle.
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
 
 	}
 
