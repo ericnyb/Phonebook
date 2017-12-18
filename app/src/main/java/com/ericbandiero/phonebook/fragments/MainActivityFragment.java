@@ -104,6 +104,9 @@ public class MainActivityFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		if (savedInstanceState!=null){
+			//Restore saved data.
+		}
 	}
 
 	/**
@@ -148,6 +151,19 @@ public class MainActivityFragment extends Fragment {
 				contactsRxJava.subscribe(s -> setUpData(s));
 			}
 		}
+	}
+
+
+	/**
+	 * Called when the fragment is visible to the user and actively running.
+	 * This is generally
+	 * tied to {@link Activity#onResume() Activity.onResume} of the containing
+	 * Activity's lifecycle.
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+
 	}
 
 	@Override
