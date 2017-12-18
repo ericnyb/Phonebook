@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ericbandiero.phonebook.R;
@@ -66,6 +67,7 @@ public class MainActivityFragment extends Fragment {
 
 	private final int REQUEST_CONTACTS=1;
 
+	private ProgressBar progressBar;
 
 	private static String[] PERMISSIONS_CONTACT = {Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS};
 
@@ -134,10 +136,8 @@ public class MainActivityFragment extends Fragment {
 
 
 	/**
-	 * Called when the fragment is visible to the user and actively running.
-	 * This is generally
-	 * tied to {@link Activity#onResume() Activity.onResume} of the containing
-	 * Activity's lifecycle.
+	 *	We put code in here to fetch data.
+	 *	If user leaves app and they come back they may have changed contacts data.
 	 */
 	@Override
 	public void onResume() {
@@ -153,17 +153,23 @@ public class MainActivityFragment extends Fragment {
 			requestContactsPermissions();
 
 		} else {
-
 			// Contact permissions have been granted. Show the contacts fragment.
 			if (AppConstant.DEBUG)
 				Log.d(this.getClass().getSimpleName() + ">", "Contact permissions have already been granted. Displaying contact details.");
 			//allContacts = contactsDao.getAllContacts(this.getActivity());
-			Observable<List<ContactsModel>> contactsRxJava = contactsDao.getContactsRxJava(this.getActivity());
-			if (contactsRxJava != null) {
-				contactsRxJava.subscribe(s -> setUpData(s));
-			}
+			fetchContacts();
 		}
 
+	}
+
+	private void fetchContacts(){
+		//TODO Finish action bar or add it to menu...
+		progressBar=new ProgressBar(this.getContext());
+		progressBar.setVisibility(View.VISIBLE);
+		Observable<List<ContactsModel>> contactsRxJava = contactsDao.getContactsRxJava(this.getActivity());
+		if (contactsRxJava != null) {
+			contactsRxJava.subscribe(s -> setUpData(s));
+		}
 	}
 
 	@Override
@@ -171,8 +177,6 @@ public class MainActivityFragment extends Fragment {
 		super.onSaveInstanceState(outState);
 		//Save the fragment's state here
 	}
-
-
 
 	public void setUpData(List<ContactsModel> contactsModelsList){
 		allContacts=contactsModelsList;
@@ -182,6 +186,9 @@ public class MainActivityFragment extends Fragment {
 		rvContactsModelView.addItemDecoration( itemDecoration);
 		// Set layout manager to position the items
 		rvContactsModelView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+		if (progressBar!=null){
+			progressBar.setVisibility(View.INVISIBLE);
+		}
 		if (this.allContacts.isEmpty()){
 			UtilityPhone.AlertMessageSimple(this.getActivity(),"No Contacts on File","You can add contacts by tapping the plus button",null);
 		}
@@ -251,10 +258,7 @@ public class MainActivityFragment extends Fragment {
 		if (requestCode==REQUEST_CONTACTS){
 			if(grantResults[0]== PackageManager.PERMISSION_GRANTED & grantResults[1]==PackageManager.PERMISSION_GRANTED){
 				if (AppConstant.DEBUG) Log.d(this.getClass().getSimpleName()+">","Permission granted!");
-				Observable<List<ContactsModel>> contactsRxJava = contactsDao.getContactsRxJava(this.getActivity());
-				if (contactsRxJava != null) {
-					contactsRxJava.subscribe(s -> setUpData(s));
-				}
+				fetchContacts();
 			}
 			else{
 				super.onRequestPermissionsResult(requestCode, permissions, grantResults);
