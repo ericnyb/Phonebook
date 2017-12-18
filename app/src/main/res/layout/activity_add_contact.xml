@@ -53,13 +53,26 @@
         android:inputType="phone"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/act_add_edit_phone">
     <Button
         android:id="@+id/button_act_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_below="@+id/act_add_edit_phone"
-        android:layout_centerInParent="true"
-        android:text="Submit" />
+        android:textColor="@color/Black"
+        android:backgroundTint="@color/LightBlue"
+        android:text="@string/submit" />
+        <Button
+            android:id="@+id/button_act_auto_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/LightGreen"
+            android:textColor="@color/Black"
+            android:text="@string/auto_add" />
+    </LinearLayout>
 </RelativeLayout>
 
