@@ -58,7 +58,7 @@ public class AddContactActivity extends AppCompatActivity {
 	private void addContact() {
 		//TODO Put in actual validation
 		if (!validateName(editTextName.getText().toString()) | !validatePhone(editTextPhone.getText().toString())){
-			UtilityPhone.toastShowLong(this,"Invalid data!");
+			UtilityPhone.toastShowLong(this,getString(R.string.contact_data_not_valid));
 			return;
 		}
 
@@ -66,8 +66,7 @@ public class AddContactActivity extends AppCompatActivity {
 		Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
 		// Sets the MIME type to match the Contacts Provider
 		intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-		intent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
-		// Inserts a phone number
+		// Inserts a name
 		intent.putExtra(ContactsContract.Intents.Insert.NAME, editTextName.getText().toString());
 
 		String unFormattedPhone=editTextPhone.getText().toString();
@@ -80,7 +79,10 @@ public class AddContactActivity extends AppCompatActivity {
 			formattedPhone=unFormattedPhone;
 		}
 
-		intent.putExtra(ContactsContract.Intents.Insert.PHONE, editTextPhone.getText().toString());
+		editTextPhone.setText(formattedPhone);
+
+		//Insert phone number
+		intent.putExtra(ContactsContract.Intents.Insert.PHONE, formattedPhone);
 		//We will assume user is going to enter a mobile number.
 		intent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
 		//This is so we come back to our activity
@@ -89,10 +91,10 @@ public class AddContactActivity extends AppCompatActivity {
 
 	}
 	public boolean validateName(String name){
-		return true;
+		return !name.isEmpty();
 	}
 	public boolean validatePhone(String phone){
-		return true;
+		return !phone.isEmpty();
 	}
 
 	@Override
